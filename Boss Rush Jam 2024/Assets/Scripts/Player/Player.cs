@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public float hp = 100;
 
     public Rigidbody2D rb;
+    public Animator anim;
 
     [SerializeField]
     internal PlayerMovement playerMovement;
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
     internal PlayerInput playerInput;
     [SerializeField]
     internal PlayerActions playerActions;
+    [SerializeField]
+    internal PlayerAnimator playerAnimator;
     // Start is called before the first frame update
     private void Awake()
     {

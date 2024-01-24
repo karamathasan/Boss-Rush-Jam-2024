@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -16,10 +16,33 @@ public class PlayerInput : MonoBehaviour
 
     // Update is called once per frame
 
-    internal void OnWalk(InputValue value )
+    //internal void OnWalk(InputValue value)
+    //{
+    //    Vector2 direction;        
+    //    direction = value.Get<Vector2>();
+    //    player.playerMovement.Walk(direction);
+    //}
+
+    internal void Walk()
     {
-        Vector2 direction;        
-        direction = value.Get<Vector2>();
+        Vector2 direction = Vector2.zero;
+
+        if (Input.GetKey("a"))
+        {
+            direction.x = -1;
+        }else if (Input.GetKey("d"))
+        {
+            direction.x = 1;
+        }
+
+        if (Input.GetKey("w"))
+        {
+            direction.y = 1;
+        }else if (Input.GetKey("s"))
+        {
+            direction.y = -1;
+        }
+
         player.playerMovement.Walk(direction);
     }
 
@@ -29,16 +52,29 @@ public class PlayerInput : MonoBehaviour
     //}
     private void FixedUpdate()
     {
-        
+        Walk();
+        PrimaryShot();
+
     }
     internal void PrimaryShot()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("left click");
             //Vector2 direction = Vector2.Angle(player.rb.position, Input.mousePosition);
             Vector2 direction = (Vector2)Input.mousePosition - player.rb.position;
             player.playerActions.PrimaryShot(direction);
         }
+    }
+
+    internal void pickUpPrimary()
+    {
+        //GameObject.FindObjectOfType<>
+
+        //if (Input.GetKeyDown("e"))
+        //{
+        //    player.playerActions.swappableShots.Enqueue()
+        //}
     }
 
     internal void SecondaryShot()
