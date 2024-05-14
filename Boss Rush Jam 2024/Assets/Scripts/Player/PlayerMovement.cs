@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
         //float e = player.movSpeed - player.rb.velocity.magnitude;
         //player.rb.AddForce(direction * e * kA, ForceMode2D.Force);
         //player.rb.AddForce(direction, ForceMode2D.Force);
+        direction.Normalize();
         player.rb.velocity = direction * player.movSpeed;
         flip();
     }

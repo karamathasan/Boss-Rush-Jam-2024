@@ -50,20 +50,24 @@ public class PlayerInput : MonoBehaviour
     //{
 
     //}
-    private void FixedUpdate()
+    private void Update()
     {
         Walk();
         PrimaryShot();
-
+        Swap();
     }
+
     internal void PrimaryShot()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("left click");
-            //Vector2 direction = Vector2.Angle(player.rb.position, Input.mousePosition);
-            Vector2 direction = (Vector2)Input.mousePosition - player.rb.position;
-            player.playerActions.PrimaryShot(direction);
+            Vector3 screenPoint = Input.mousePosition;
+            screenPoint.z = -Camera.main.transform.position.z;
+            Vector2 direction = (Vector2)Camera.main.ScreenToWorldPoint(screenPoint) - player.rb.position;
+
+            direction.Normalize();
+            player.playerActions.PrimaryShot(direction); 
+
         }
     }
 
@@ -83,6 +87,14 @@ public class PlayerInput : MonoBehaviour
         {
             Vector2 direction = (Vector2)Input.mousePosition - player.rb.position;
             player.playerActions.SecondaryShot(direction);
+        }
+    }
+
+    internal void Swap()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            player.playerActions.ExchangeWithShot();
         }
     }
 }

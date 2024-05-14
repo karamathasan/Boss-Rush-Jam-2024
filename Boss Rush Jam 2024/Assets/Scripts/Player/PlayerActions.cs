@@ -13,11 +13,12 @@ public class PlayerActions : MonoBehaviour
     [SerializeField]
     internal GameObject primaryShotPrefab;
     internal Queue<GameObject> swappableShots;
+    internal Stack<GameObject> shotStack;
 
 
     void Start()
     {
-        
+        swappableShots = new Queue<GameObject>(3);
     }
 
     // Update is called once per frame
@@ -26,15 +27,26 @@ public class PlayerActions : MonoBehaviour
         
     }
 
-    internal void PrimaryShot(Vector2 direction)
+    internal void PrimaryShot(Vector3 direction)
     {
-        GameObject primaryShot = Instantiate(primaryShotPrefab, player.transform.position, Quaternion.Euler(direction));
-        primaryShot.GetComponent<Rigidbody2D>().AddForce(direction.normalized, ForceMode2D.Impulse );
+        direction.Normalize();
+        Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(new Vector2(1,0),direction)));
+        GameObject primaryShot = Instantiate(primaryShotPrefab, player.transform.position, rotation);
+        primaryShot.GetComponent<Rigidbody2D>().AddForce(direction, ForceMode2D.Impulse );
+        swappableShots.Enqueue(primaryShot);
     }
 
     internal void ExchangeWithShot()
     {
-
+        if (swappableShots.Count == 0)
+        {
+            return;
+        }
+        GameObject swappingObj = swappableShots.Dequeue();
+        Vector3 temp = swappingObj.transform.position;
+        swappingObj.transform.position = player.transform.position;
+        swappingObj.GetComponent<Rigidbody2D>().AddForce(-2 * swappingObj.transform.rotation.eulerAngles, ForceMode2D.Impulse);
+        player.transform.position = temp;
     }
 
     internal void SecondaryShot(Vector2 direction)
