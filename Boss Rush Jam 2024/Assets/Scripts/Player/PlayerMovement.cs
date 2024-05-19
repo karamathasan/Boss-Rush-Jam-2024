@@ -15,46 +15,5 @@ public class PlayerMovement : MonoBehaviour
         //player.rb.AddForce(direction, ForceMode2D.Force);
         direction.Normalize();
         player.rb.velocity = direction * player.movSpeed;
-        flip();
     }
-
-    void flip()
-    {
-
-
-        if(player.rb.velocity.y > 0)
-        {
-            player.playerAnimator.walkingUp();
-        }
-
-        if (player.rb.velocity.y < 0)
-        {
-            player.playerAnimator.walkingDown();
-        }
-
-        if(player.rb.velocity.x > 0)
-        {
-            if(player.transform.localScale.x < 0){
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            player.playerAnimator.walkingHorizontal();
-        } 
-
-        if (player.rb.velocity.x < 0)
-        {
-            if(player.transform.localScale.x > 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            player.playerAnimator.walkingHorizontal();
-        }
-
-        if (player.rb.velocity.x == 0 && player.rb.velocity.y == 0)
-        {
-            player.playerAnimator.idle();
-            player.rb.transform.localScale = new Vector3(1, 1, 1);
-            //return;
-        }
-    }
-
 }

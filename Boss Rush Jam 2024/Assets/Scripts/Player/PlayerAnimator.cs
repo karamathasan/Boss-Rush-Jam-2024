@@ -25,17 +25,42 @@ public class PlayerAnimator : MonoBehaviour
     }
     internal void walkingHorizontal()
     {
-        //if(player.playerInput)
         anim.Play("walkingHorizontal");
     }
 
     internal void walkingUp()
     {
+        //transform.localScale = new Vector3(1, 1, 1);
         anim.Play("walkingUp");
     }
 
     internal void walkingDown()
     {
+        //transform.localScale = new Vector3(1, 1, 1);
         anim.Play("walkingDown");
+    }
+
+    internal void walkDirection(Vector2 direction)
+    {
+        if (direction.Equals(Vector2.zero))
+        {
+            idle();
+            return; 
+        }
+
+        if (Mathf.Abs(direction.x) > 0) { 
+            transform.localScale = new Vector3(direction.x, 1, 1);
+            walkingHorizontal();
+        }
+
+        if (direction.y > 0)
+        {
+            walkingUp();
+        }
+
+        if (direction.y < 0)
+        {
+            walkingDown();
+        }
     }
 }

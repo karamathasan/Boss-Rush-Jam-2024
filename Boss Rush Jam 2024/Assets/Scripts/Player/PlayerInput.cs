@@ -30,26 +30,38 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKey("a"))
         {
             direction.x = -1;
-        }else if (Input.GetKey("d"))
+        }
+        if (Input.GetKey("d"))
         {
             direction.x = 1;
+        }
+        if (Input.GetKey("a") && Input.GetKey("d"))
+        {
+            direction.x = 0;
         }
 
         if (Input.GetKey("w"))
         {
             direction.y = 1;
-        }else if (Input.GetKey("s"))
+        }
+        if (Input.GetKey("s"))
         {
             direction.y = -1;
         }
+        if (Input.GetKey("w") && Input.GetKey("s"))
+        {
+            direction.y = 0;
+        }
 
-        player.playerMovement.Walk(direction);
+        bool keyUpdate = Input.GetKeyDown("a") || Input.GetKeyDown("s") || Input.GetKeyDown("d") || Input.GetKeyDown("w") ||
+                         Input.GetKeyUp("a") || Input.GetKeyUp("s") || Input.GetKeyUp("d") || Input.GetKeyUp("w");
+        if (keyUpdate)
+        {
+            player.playerAnimator.walkDirection(direction);
+            player.playerMovement.Walk(direction);
+        }
     }
 
-    //private void SwapPosition(InputValue value)
-    //{
-
-    //}
     private void Update()
     {
         Walk();
@@ -85,8 +97,9 @@ public class PlayerInput : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            Vector2 direction = (Vector2)Input.mousePosition - player.rb.position;
-            player.playerActions.SecondaryShot(direction);
+            Vector3 screenPoint = Input.mousePosition;
+            screenPoint.z = -Camera.main.transform.position.z;
+            Vector2 direction = (Vector2)Camera.main.ScreenToWorldPoint(screenPoint) - player.rb.position;
         }
     }
 
